@@ -51,8 +51,13 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Column {
                         Greeting("Android")
-                        CounterComponent()
+                       // CounterComponent()
+
                     }
+                }
+
+                BackPressedHandler(true) {
+                    Toast.makeText(this@MainActivity, "返回", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -63,10 +68,10 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     Column {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
+//        Text(
+//            text = "Hello $name!",
+//            modifier = modifier
+//        )
         //PaddingElement
         Log.e("twj124", "1: " + Modifier.padding(10.dp) + "  " + (Modifier.padding(10.dp)))
         //CombinedModifier
@@ -85,21 +90,38 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                Toast.makeText(context, "跳转", Toast.LENGTH_SHORT).show()
-                context.startActivity(Intent(context, SecondActivity::class.java))
+                context.startActivity(Intent(context, ComposeNestedNativeActivity::class.java))
             },
 
             //size前设置padding（即margin），size后设置是内间距，即padding
             modifier = Modifier
                 .padding(10.dp)
-                .size(width = 190.dp, height = 40.dp)
-                .background(Color.Red)
+                .size(width = 290.dp, height = 40.dp)
+              //  .background(Color.Red)
         ) {
             Text(
-                text = "跳转到SecondActivity",
+                text = "跳转到 Compose 嵌套原生 View",
                 modifier = modifier.alpha(0.5f)
             )
         }
+
+        Button(
+            onClick = {
+                context.startActivity(Intent(context, ComposeNestedXmlActivity::class.java))
+            },
+
+            //size前设置padding（即margin），size后设置是内间距，即padding
+            modifier = Modifier
+                .padding(10.dp)
+                .size(width = 290.dp, height = 40.dp)
+               // .background(Color.Red)
+        ) {
+            Text(
+                text = "跳转到 Compose 嵌套 xml",
+                modifier = modifier.alpha(0.5f)
+            )
+        }
+
         Button(
             onClick = {
                 Toast.makeText(context, "跳转", Toast.LENGTH_SHORT).show()
@@ -108,7 +130,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             //先设置padding = margin
             modifier = Modifier
                 .padding(10.dp)
-                .size(width = 190.dp, height = 40.dp)
+                .size(width = 290.dp, height = 40.dp)
         ) {
             Text(
                 text = "跳转到ImageActivity",
@@ -168,14 +190,15 @@ fun CounterComponent() {
  */
 @Composable
 fun BackPressedHandler(enable: Boolean = true, onBackPressed: () -> Unit) {
-    val backDispatcher = checkNotNull(LocalOnBackPressedDispatcherOwner.current) {
-        "no OnBackPressedDispatcher"
-    }.onBackPressedDispatcher
+    val backDispatcher =
+        checkNotNull(LocalOnBackPressedDispatcherOwner.current) {
+            "no OnBackPressedDispatcher"
+        }.onBackPressedDispatcher
 
     val backCallback = remember {
         object : OnBackPressedCallback(enable) {
             override fun handleOnBackPressed() {
-               onBackPressed()
+                onBackPressed()
             }
         }
     }

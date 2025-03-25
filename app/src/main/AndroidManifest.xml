@@ -26,8 +26,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SecondActivity"/>
+        <activity android:name=".ComposeNestedNativeActivity"/>
         <activity android:name=".ImageActivity"/>
+
+        <activity android:name=".ComposeNestedXmlActivity"/>
+
     </application>
 
 </manifest>

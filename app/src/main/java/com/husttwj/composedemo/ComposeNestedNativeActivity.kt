@@ -40,7 +40,7 @@ class ComposeNestedNativeActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                       SecondGreeting("原生view")
+                        SecondGreeting("原生view")
 
                         //background函数在前面、padding在后面就是padding效果，否则就是margin效果
                         //嵌套Android 原生view
@@ -76,7 +76,7 @@ class ComposeNestedNativeActivity : ComponentActivity() {
                                 it.setOnDateChangeListener { view, year, month, dayOfMonth ->
                                     Toast.makeText(
                                         view.context,
-                                        "${year}年${month}月${dayOfMonth}日",
+                                        "${year}年${month + 1}月${dayOfMonth}日",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -93,7 +93,9 @@ class ComposeNestedNativeActivity : ComponentActivity() {
         super.onResume()
 
         window.decorView.postDelayed({
-            Modifier.size(10.dp).alpha(0.1f)
+            Modifier
+                .size(10.dp)
+                .alpha(0.1f)
         }, 2000)
     }
 }

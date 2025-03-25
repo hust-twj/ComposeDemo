@@ -47,6 +47,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    viewBinding {
+        enable = true
+    }
 }
 
 dependencies {
@@ -91,9 +95,10 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata")
     // Optional - Integration with RxJava
     implementation("androidx.compose.runtime:runtime-rxjava2")
+    implementation("androidx.compose.ui:ui-viewbinding:1.7.8")
 
     //codelocator
-    debugImplementation("com.bytedance.tools.codelocator:codelocator-core:2.0.3")
+    debugImplementation("com.bytedance.tools.codelocator:codelocator-core:2.0.4")
 
     //glide compose
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")

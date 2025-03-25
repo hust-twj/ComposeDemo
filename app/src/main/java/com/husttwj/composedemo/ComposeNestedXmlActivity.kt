@@ -1,29 +1,18 @@
 package com.husttwj.composedemo
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Gravity
-import android.widget.CalendarView
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import com.husttwj.composedemo.ui.theme.ComposeDemoTheme
+import androidx.compose.ui.viewinterop.AndroidViewBinding
+import com.husttwj.composedemo.databinding.ActivityNestXmlBinding
 
 /**
  * Compose 嵌套 xml
@@ -33,67 +22,31 @@ class ComposeNestedXmlActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeDemoTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Column {
-                     //  SecondGreeting("原生view")
-
-                        //background函数在前面、padding在后面就是padding效果，否则就是margin效果
-                        //嵌套Android 原生view
-                        AndroidView(
-                            factory = { context: Context ->
-                                ImageView(context).apply {
-                                    setBackgroundColor(context.resources.getColor(R.color.purple_200))
-                                    setImageResource(R.mipmap.ic_launcher)
-                                }
-                            },
-                            modifier = Modifier
-                                .size(100.dp, 200.dp)
-                                .padding(top = 20.dp)
-                        )
-
-                        AndroidView(
-                            factory = { context: Context ->
-                                TextView(context).apply {
-                                    setBackgroundColor(context.resources.getColor(R.color.teal_200))
-                                    text = "测试"
-                                    gravity = Gravity.CENTER
-                                }
-                            },
-                            modifier = Modifier
-                                .size(100.dp, 100.dp)
-                                .padding(top = 20.dp)
-                        )
-
-                        AndroidView(
-                            factory = { CalendarView(it) },
-                            modifier = Modifier.fillMaxSize(),
-                            update = {
-                                it.setOnDateChangeListener { view, year, month, dayOfMonth ->
-                                    Toast.makeText(
-                                        view.context,
-                                        "${year}年${month}月${dayOfMonth}日",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        )
-                    }
-
+            Scaffold { paddingValues ->
+                Box(modifier = Modifier.padding(paddingValues)) {
+                    ComposeNestedXml()
                 }
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+}
 
-        window.decorView.postDelayed({
-            Modifier.size(10.dp).alpha(0.1f)
-        }, 2000)
-    }
+@Composable
+fun ComposeNestedXml() {
+    val context = LocalActivity.current as ComposeNestedXmlActivity
+    AndroidViewBinding(
+        factory = { inflater, parent, attachToParent ->
+            ActivityNestXmlBinding.inflate(inflater, parent, attachToParent)
+        },
+        modifier = Modifier.fillMaxSize(),
+        update = {
+            calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+                val date = "${year}年${month + 1}月${dayOfMonth}日"
+                Toast.makeText(view.context, date, Toast.LENGTH_SHORT).show()
+                dateTv.text = date
+            }
+
+        }
+    )
 }

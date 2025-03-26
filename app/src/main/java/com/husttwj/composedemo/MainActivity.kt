@@ -100,7 +100,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
               //  .background(Color.Red)
         ) {
             Text(
-                text = "跳转到 Compose 嵌套原生 View",
+                text = "跳转到：Compose 嵌套原生 View",
                 modifier = modifier.alpha(0.5f)
             )
         }
@@ -117,14 +117,68 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                // .background(Color.Red)
         ) {
             Text(
-                text = "跳转到 Compose 嵌套 xml",
+                text = "跳转到：Compose 嵌套 xml",
+                modifier = modifier.alpha(0.5f)
+            )
+        }
+
+
+        Button(
+            onClick = {
+                context.startActivity(Intent(context, NativeNestedComposeActivity1::class.java))
+            },
+
+            //size前设置padding（即margin），size后设置是内间距，即padding
+            modifier = Modifier
+                .padding(10.dp)
+                .size(width = 290.dp, height = 40.dp)
+            // .background(Color.Red)
+        ) {
+            Text(
+                text = "跳转到：原生嵌套 Compose1",
                 modifier = modifier.alpha(0.5f)
             )
         }
 
         Button(
             onClick = {
-                Toast.makeText(context, "跳转", Toast.LENGTH_SHORT).show()
+                context.startActivity(Intent(context, NativeNestedComposeActivity2::class.java))
+            },
+
+            //size前设置padding（即margin），size后设置是内间距，即padding
+            modifier = Modifier
+                .padding(10.dp)
+                .size(width = 290.dp, height = 40.dp)
+            // .background(Color.Red)
+        ) {
+            Text(
+                text = "跳转到：原生嵌套 Compose2",
+                modifier = modifier.alpha(0.5f)
+            )
+        }
+
+        Button(
+            onClick = {
+                context.startActivity(Intent(context, NativeNestedComposeActivity3::class.java))
+            },
+
+            //size前设置padding（即margin），size后设置是内间距，即padding
+            modifier = Modifier
+                .padding(10.dp)
+                .size(width = 290.dp, height = 40.dp)
+            // .background(Color.Red)
+        ) {
+            Text(
+                text = "跳转到：原生嵌套 Compose3",
+                modifier = modifier.alpha(0.5f)
+            )
+        }
+
+
+
+        Button(
+            onClick = {
+                //Toast.makeText(context, "跳转", Toast.LENGTH_SHORT).show()
                 context.startActivity(Intent(context, ImageActivity::class.java))
             },
             //先设置padding = margin

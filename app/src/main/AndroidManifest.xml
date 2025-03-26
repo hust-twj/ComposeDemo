@@ -30,6 +30,9 @@
         <activity android:name=".ImageActivity"/>
 
         <activity android:name=".ComposeNestedXmlActivity"/>
+        <activity android:name=".NativeNestedComposeActivity1"/>
+        <activity android:name=".NativeNestedComposeActivity2"/>
+        <activity android:name=".NativeNestedComposeActivity3"/>
 
     </application>
 

@@ -4,13 +4,20 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -25,33 +32,42 @@ class Compose2AndroidView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
 
-    // 用于保存内部 WebView 实例的引用
+    // 用于保存内部 WebView 实例的引用，确保外部可以获取到
     private var _webView: WebView? = null
 
     @SuppressLint("SetJavaScriptEnabled")
     @Composable
     override fun Content() {
+        // TODO:
         // WebViewPage()
 
-        // 使用记忆函数创建 WebView，并绑定生命周期
         val webView = rememberWebViewWithLifecycle()
-        // 保存引用到外部变量 _webView，确保外部可以获取到
         DisposableEffect(Unit) {
             _webView = webView
-            onDispose { _webView = null }
-        }
-        // 使用 AndroidView 显示该 WebView
-        AndroidView(
-            factory = { webView },
-            modifier = Modifier.fillMaxSize(),
-            update = { view ->
-                view.settings.apply {
-                    javaScriptEnabled = true
-                }
-                // 可在此处执行其它 WebView 的更新操作，例如加载 URL
-                // view.loadUrl("https://www.baidu.com")
+            onDispose {
+                _webView = null
             }
-        )
+        }
+        Column {
+            Text(
+                "测试",
+                modifier = Modifier
+                    .background(Color(0x40ee0000))
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            )
+
+            // 使用 AndroidView 显示该 WebView
+            AndroidView(
+                factory = { webView },
+                modifier = Modifier.fillMaxSize(),
+                update = { view ->
+                    view.settings.apply {
+                        javaScriptEnabled = true
+                    }
+                }
+            )
+        }
     }
 
     /**
@@ -60,6 +76,9 @@ class Compose2AndroidView @JvmOverloads constructor(
     fun getWebView(): WebView? = _webView
 }
 
+/**
+ *  创建 WebView，并绑定生命周期，防止内存泄露
+ */
 @Composable
 fun rememberWebViewWithLifecycle(): WebView {
     val context = LocalContext.current
@@ -85,7 +104,9 @@ fun rememberWebViewLifecycleObserve(webView: WebView): LifecycleEventObserver {
                 Lifecycle.Event.ON_RESUME -> webView.onResume()
                 Lifecycle.Event.ON_PAUSE -> webView.onPause()
                 Lifecycle.Event.ON_DESTROY -> webView.destroy()
-                else -> android.util.Log.e("TAG", "hello world")
+                else -> {
+                    //ignore
+                }
             }
         }
     }
@@ -102,7 +123,7 @@ fun WebViewPage() {
             view.settings.apply {
                 javaScriptEnabled = true
             }
-          //  webView.loadUrl(xxx)
+            //  webView.loadUrl(xxx)
         }
     )
 }

@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -50,9 +51,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        Greeting("Android")
-                       // CounterComponent()
-
+                        MainUi()
+                        // CounterComponent()
                     }
                 }
 
@@ -65,9 +65,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun MainUi(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    Column {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 //        Text(
 //            text = "Hello $name!",
 //            modifier = modifier
@@ -97,7 +100,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(10.dp)
                 .size(width = 290.dp, height = 40.dp)
-              //  .background(Color.Red)
+            //  .background(Color.Red)
         ) {
             Text(
                 text = "跳转到：Compose 嵌套原生 View",
@@ -114,7 +117,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(10.dp)
                 .size(width = 290.dp, height = 40.dp)
-               // .background(Color.Red)
+            // .background(Color.Red)
         ) {
             Text(
                 text = "跳转到：Compose 嵌套 xml",
@@ -135,7 +138,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             // .background(Color.Red)
         ) {
             Text(
-                text = "跳转到：原生嵌套 Compose1",
+                text = "跳转到：原生嵌套 Compose - 1",
                 modifier = modifier.alpha(0.5f)
             )
         }
@@ -152,7 +155,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             // .background(Color.Red)
         ) {
             Text(
-                text = "跳转到：原生嵌套 Compose2",
+                text = "跳转到：原生嵌套 Compose - 2",
                 modifier = modifier.alpha(0.5f)
             )
         }
@@ -169,7 +172,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             // .background(Color.Red)
         ) {
             Text(
-                text = "跳转到：原生嵌套 Compose3",
+                text = "跳转到：原生嵌套 Compose - 3",
                 modifier = modifier.alpha(0.5f)
             )
         }
@@ -270,8 +273,8 @@ fun BackPressedHandler(enable: Boolean = true, onBackPressed: () -> Unit) {
 fun GreetingPreview() {
     ComposeDemoTheme {
         Column {
-            Greeting("Android")
-            CounterComponent()
+            MainUi()
+            //  CounterComponent()
         }
     }
 }

@@ -2,6 +2,7 @@ package com.husttwj.composedemo
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.CalendarView
 import android.widget.ImageView
@@ -53,7 +54,15 @@ class ComposeNestedNativeActivity : ComponentActivity() {
                             },
                             modifier = Modifier
                                 .size(100.dp, 200.dp)
-                                .padding(top = 20.dp)
+                                .padding(top = 20.dp),
+
+                            update = {
+                                //布局加载后，width还是0，需要post才能获取到真正的宽高
+                                Log.e("twj124", "update: " + it + "  " + it.width)
+                                it.post {
+                                    Log.e("twj124", "post update: " + it + "  " + it.width)
+                                }
+                            }
                         )
 
                         AndroidView(

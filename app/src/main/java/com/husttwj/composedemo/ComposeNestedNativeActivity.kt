@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.husttwj.composedemo.ui.theme.ComposeDemoTheme
@@ -135,3 +136,63 @@ fun SecondGreeting(name: String, modifier: Modifier = Modifier) {
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    ComposeDemoTheme  {
+        Column {
+            SecondGreeting("原生view")
+
+            //background函数在前面、padding在后面就是padding效果，否则就是margin效果
+            //嵌套Android 原生view
+            AndroidView(
+                factory = { context: Context ->
+                    ImageView(context).apply {
+                        setBackgroundColor(context.resources.getColor(R.color.purple_200))
+                        setImageResource(R.mipmap.ic_launcher)
+                    }
+                },
+                modifier = Modifier
+                    .size(100.dp, 200.dp)
+                    .padding(top = 20.dp),
+
+                update = {
+                    //布局加载后，width还是0，需要post才能获取到真正的宽高
+                    Log.e("twj124", "update: " + it + "  " + it.width)
+                    it.post {
+                        Log.e("twj124", "post update: " + it + "  " + it.width)
+                    }
+                }
+            )
+
+            AndroidView(
+                factory = { context: Context ->
+                    TextView(context).apply {
+                        setBackgroundColor(context.resources.getColor(R.color.teal_200))
+                        text = "测试"
+                        gravity = Gravity.CENTER
+                    }
+                },
+                modifier = Modifier
+                    .size(100.dp, 100.dp)
+                    .padding(top = 20.dp)
+            )
+
+            AndroidView(
+                factory = { CalendarView(it) },
+                modifier = Modifier.fillMaxSize(),
+                update = {
+                    it.setOnDateChangeListener { view, year, month, dayOfMonth ->
+                        Toast.makeText(
+                            view.context,
+                            "${year}年${month + 1}月${dayOfMonth}日",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            )
+        }
+    }
+}
+
